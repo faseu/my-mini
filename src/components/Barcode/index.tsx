@@ -6,7 +6,7 @@ import jsBarcode from 'jsbarcode';
 import { Button } from '@nutui/nutui-react-taro';
 
 interface BarcodeProps {
-  value?: string;
+  value: string;
   format?: string;
   width?: number;
   height?: number;
@@ -14,10 +14,36 @@ interface BarcodeProps {
 }
 
 const Index = ({ value }: BarcodeProps) => {
-  const [barcodeList, setBarcodeList] = useState([]); // 条形码列表
+  const [barcodeList, setBarcodeList] = useState<string[]>([]); // 条形码列表
   useEffect(() => {
-    setBarcodeList(value.split(' '));
+    setBarcodeList(intelligentSplit(value));
   }, [value]);
+
+  const intelligentSplit = (content: string): string[] => {
+    // 定义分隔符的优先级：从高到低的分割方式
+    const splitPatterns: RegExp[] = [
+      /\n{2,}/, // 两个或更多连续换行作为最强的分割
+      /,/, // 逗号分隔
+      / {2,}/, // 两个或更多空格
+      /\s/, // 单个空格或其他空白字符（如单换行）
+    ];
+
+    // 初始结果数组包含整个输入字符串
+    let result: string[] = [content];
+
+    // 依次根据每个模式进行分割
+    splitPatterns.forEach(pattern => {
+      let tempResult: string[] = [];
+      result.forEach(part => {
+        // 对每个部分应用当前的分隔模式
+        tempResult = tempResult.concat(part.split(pattern));
+      });
+      result = tempResult;
+    });
+
+    // 移除空白元素并返回结果
+    return result.filter(r => r.trim());
+  };
 
   // 生成条形码的函数
   const generateBarcodeAsync = (barcode, index) => {
