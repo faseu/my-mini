@@ -1,0 +1,35 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",                     // 基础 ESLint 推荐规则
+    "plugin:react/recommended",                // React 推荐规则
+    "plugin:@typescript-eslint/recommended",  // TypeScript 推荐规则
+    "plugin:prettier/recommended"              // Prettier 推荐规则
+  ],
+  "parser": "@typescript-eslint/parser",      // 使用 TypeScript 解析器
+  "parserOptions": {
+    "ecmaVersion": 2020,                       // ECMAScript 版本
+    "sourceType": "module"                     // 允许使用模块
+  },
+  "plugins": [
+    "react",                                   // React 插件
+    "@typescript-eslint",                      // TypeScript 插件
+    "prettier"                                 // Prettier 插件
+  ],
+  "rules": {
+    "react/jsx-uses-react": "off",            // React 17+ 不再需要
+    "react/react-in-jsx-scope": "off",        // React 17+ 不再需要
+    "prettier/prettier": "error",              // Prettier 规则作为 ESLint 错误
+    "no-console": "warn",                      // 允许 console 警告
+    "no-unused-vars": "warn"                   // 未使用变量的警告
+  },
+  "settings": {
+    "react": {
+      "version": "detect"                      // 自动检测 React 版本
+    }
+  }
+}
